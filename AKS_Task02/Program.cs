@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task2
+namespace AKS_Task02
 {
     internal class Program
     {
