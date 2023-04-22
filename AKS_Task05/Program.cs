@@ -39,7 +39,7 @@ namespace Labirint
             }
             Console.ResetColor();
         }
-        static void hod(int[,] labirint, int x, int y, bool prov)
+        static void step(int[,] labirint, int x, int y, bool prov)
         {
             if (prov)
             {
@@ -110,12 +110,12 @@ namespace Labirint
                         if (labirint[--y, x] == 1)
                         {
                             ++y;
-                            hod(labirint, x, y, false);
+                            step(labirint, x, y, false);
                         }
                         else
                         if (labirint[--y, x] == 0)
                         {
-                            hod(labirint, x, y, true);
+                            step(labirint, x, y, true);
                         }
                         else
                         {
@@ -127,12 +127,12 @@ namespace Labirint
                         if (labirint[++y, x] == 1)
                         {
                             --y;
-                            hod(labirint, x, y, false);
+                            step(labirint, x, y, false);
                         }
                         else
                         if (labirint[++y, x] == 0)
                         {
-                            hod(labirint, x, y, true);
+                            step(labirint, x, y, true);
                         }
                         else
                         {
@@ -144,12 +144,12 @@ namespace Labirint
                         if (labirint[y, --x] == 1)
                         {
                             ++x;
-                            hod(labirint, x, y, false);
+                            step(labirint, x, y, false);
                         }
                         else
                         if (labirint[y, --x] == 0)
                         {
-                            hod(labirint, x, y, true);
+                            step(labirint, x, y, true);
                         }
                         else
                         {
@@ -161,12 +161,12 @@ namespace Labirint
                         if (labirint[y, ++x] == 1)
                         {
                             --x;
-                            hod(labirint, x, y, false);
+                            step(labirint, x, y, false);
                         }
                         else
                         if (labirint[y, ++x] == 0)
                         {
-                            hod(labirint, x, y, true);
+                            step(labirint, x, y, true);
                         }
                         else
                         {
