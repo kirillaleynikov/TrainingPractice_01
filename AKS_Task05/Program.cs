@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Labirint
 {
@@ -21,7 +16,7 @@ namespace Labirint
                                                                   A - Влево");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            for (int i = 0; i < labirint.GetLength(0); i++, ++y)
+            for (int i = 0; i < labirint.GetLength(0); i++, ++y) //создание лабиринта
             {
                 for (int j = 0; j < labirint.GetLength(1); j++, ++x)
                 {
@@ -137,7 +132,6 @@ namespace Labirint
                         else
                         {
                             finish(labirint, x, y);
-
                         }
                         break;
                     case ('a'):
@@ -154,7 +148,6 @@ namespace Labirint
                         else
                         {
                             finish(labirint, x, y);
-
                         }
                         break;
                     case ('d'):
@@ -171,7 +164,6 @@ namespace Labirint
                         else
                         {
                             finish(labirint, x, y);
-
                         }
                         break;
                     default:
