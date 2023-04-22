@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Labirint
 {
@@ -25,6 +27,10 @@ namespace Labirint
                     {
                         Console.Write("█");
                     }
+                    if (labirint[i, j] == 0)
+                    {
+                        Console.Write(" ");
+                    }
                     if (labirint[i, j] == 3)
                     {
                         Console.Write("X");
@@ -36,17 +42,19 @@ namespace Labirint
         }
         static void step(int[,] labirint, int x, int y, bool prov)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             if (prov)
             {
-                Console.Clear();
                 LAB(labirint);
                 Console.SetCursorPosition(x, y);
                 Console.Write("☻");
-                Console.SetCursorPosition(55, 0);
+                Console.SetCursorPosition(55, 15);
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Write("Вы врезались в стену!");
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
-                Console.Clear();
                 LAB(labirint);
                 Console.SetCursorPosition(x, y);
                 Console.Write("☻");
@@ -57,48 +65,42 @@ namespace Labirint
         static void finish(int[,] labirint, int x, int y)
         {
             Console.Clear();
-            Console.SetCursorPosition(x, y);
-            Console.Write("☻");
-            Console.SetCursorPosition(55, 15);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(Console.WindowWidth / 2 - "Поздравляем!".Length / 2, Console.WindowHeight / 2);
+            Console.WriteLine("Поздравляем!");
+            Console.SetCursorPosition(Console.WindowWidth / 2 - "Вы прошли лабиринт!".Length / 2, Console.WindowHeight / 2 + 1);
             Console.WriteLine("Вы прошли лабиринт!");
+            Console.ReadKey();
+            Environment.Exit(0);
         }
 
         static void Main(string[] args)
         {
+            var x = 0;
+            var y = 0;
             Console.CursorVisible = false;
             Console.SetWindowSize(100, 30);
-            int[,] labirint =
-            {
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,2,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1},
-            {1,0,1,1,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,0,1},
-            {1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,1,0,1,0,1},
-            {1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,0,1},
-            {1,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,0,1},
-            {1,0,1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1},
-            {1,0,1,0,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,1},
-            {1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1,0,1},
-            {1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,1},
-            {1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,1,1,0,1},
-            {1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1},
-            {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1},
-            {1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,1},
-            {1,0,1,1,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},
-            {1,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,1},
-            {1,1,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1},
-            {1,0,0,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,1},
-            {1,0,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,1,1,0,1},
-            {1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,3,1},
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-            };
+            string[] strings = File.ReadAllLines("map.txt");
+            int[,] labirint = new int[strings.Length, strings[0].Length];
+            for (int i = 0; i < strings.Length; i++)
+                for (int j = 0; j < strings[0].Length; j++)
+                {
+                    labirint[i, j] = int.Parse(strings[i][j].ToString());
+                    if (labirint[i, j] == 2)
+                    {
+                        x = j;
+                        y = i;
+                        labirint[i, j] = 0;
+                    }
+                }
             LAB(labirint);
-            var x = 1;
-            var y = 1;
             Console.SetCursorPosition(x, y);
             Console.Write("☻");
             var GameOver = false;
             while (!GameOver)
             {
+                Console.SetCursorPosition(Console.WindowWidth - 5, Console.WindowHeight - 5);
+                Console.ForegroundColor = ConsoleColor.Black;
                 switch (Console.ReadKey().KeyChar)
                 {
                     case ('w'):
@@ -166,7 +168,6 @@ namespace Labirint
                         }
                         break;
                     default:
-                        Console.Clear();
                         LAB(labirint);
                         Console.SetCursorPosition(x, y);
                         Console.Write("☻");
